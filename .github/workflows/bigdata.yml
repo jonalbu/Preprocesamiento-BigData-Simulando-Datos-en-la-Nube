@@ -1,0 +1,55 @@
+name: Big Data Cleaning & Preprocessing Pipeline (EA2)
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  preprocess-and-audit:
+    name: Execute Data Preprocessing & Quality Pipeline
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run data cleaning and preprocessing script
+        run: |
+          python src/cleaning.py
+
+      - name: Verify generated artifacts exist
+        run: |
+          echo "=== Verificando existencia de artefactos ==="
+          test -f src/db/ingestion.db || { echo "Error: Falta src/db/ingestion.db"; exit 1; }
+          test -f src/xlsx/cleaned_data.xlsx || { echo "Error: Falta src/xlsx/cleaned_data.xlsx"; exit 1; }
+          test -f src/static/auditoria/cleaning_report.txt || { echo "Error: Falta src/static/auditoria/cleaning_report.txt"; exit 1; }
+          echo "Todos los artefactos de limpieza fueron generados correctamente."
+
+      - name: Display Cleaning Audit Log
+        run: |
+          echo "=== Contenido del Reporte de Auditoria ==="
+          cat src/static/auditoria/cleaning_report.txt
+
+      - name: Upload Cleaned Data Artifacts (DB, Excel Sample, Audit Report)
+        uses: actions/upload-artifact@v4
+        with:
+          name: preprocessing-evidences
+          path: |
+            src/db/ingestion.db
+            src/xlsx/cleaned_data.xlsx
+            src/static/auditoria/cleaning_report.txt
+          retention-days: 30

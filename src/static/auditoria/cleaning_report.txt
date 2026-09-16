@@ -1,0 +1,54 @@
+================================================================================
+          REPORTE DE AUDITORIA DE PREPROCESAMIENTO Y LIMPIEZA DE DATOS (EA2)
+================================================================================
+Asignatura : Arquitectura Big Data
+Actividad  : EA2. Preprocesamiento y Limpieza de Datos en Plataforma de Big Data
+Fecha/Hora : 2026-09-16 17:44:28
+Fuente     : C:\Users\jonal\OneDrive\Documentos\9_IU Digital\7 Semestre\Arquitectura Big Data\Tarea_2\players_20.csv
+Destino BD : C:\Users\jonal\OneDrive\Documentos\9_IU Digital\7 Semestre\Arquitectura Big Data\Tarea_2\src\db\ingestion.db (Tabla: cleaned_players)
+================================================================================
+
+1. COMPARATIVO GENERAL: ESTADO ANTES VS DESPUES
+--------------------------------------------------------------------------------
+Metrica                         | Estado Inicial (Crudo) | Estado Final (Limpio)
+--------------------------------------------------------------------------------
+Total de Registros (Filas)      | 18278                  | 18278               
+Total de Columnas               | 104                    | 25                  
+Total de Valores Nulos          | 244935                 | 0                   
+Registros Duplicados            | 0                      | 0
+--------------------------------------------------------------------------------
+
+2. DETALLE DE OPERACIONES DE PREPROCESAMIENTO APLICADAS:
+--------------------------------------------------------------------------------
+a) Seleccion de Atributos:
+   - Se seleccionaron 21 atributos analiticos principales del dataset original de 104 columnas.
+b) Eliminacion de Duplicados:
+   - Duplicados eliminados por ID de jugador: 0.
+c) Imputacion y Tratamiento de Valores Nulos:
+   - Club: Nulos reemplazados por 'Sin Club'.
+   - Salarios y Valores de Mercado ('value_eur', 'wage_eur'): Nulos imputados a 0.
+   - Atributos de Rendimiento ('pace', 'shooting', 'passing', etc.):
+     Valores nulos imputados mediante la mediana estadistica de la columna.
+d) Correccion y Estandarizacion de Tipos de Datos:
+   - 'dob': Convertido a formato estandar de fecha (DateTime YYYY-MM-DD).
+   - 'age', 'height_cm', 'weight_kg', 'overall', 'potential': Convertidos a enteros (int).
+   - Campos de texto normalizados sin espacios residuales (strip).
+e) Ingenieria de Caracteristicas y Transformaciones:
+   - 'bmi': Calculo del Indice de Masa Corporal [peso / (altura/100)^2].
+   - 'potential_growth': Calculo del margen de desarrollo [potential - overall].
+   - 'overall_normalized': Normalizacion Min-Max del puntaje de habilidad [0.0 - 1.0].
+   - 'age_category': Segmentacion en categorias de edad (Promesa, Plenitud, Veterano, Master).
+
+3. VERIFICACION DE INTEGRIDAD Y CALIDAD FINAL:
+--------------------------------------------------------------------------------
+- Nulos en 'sofifa_id'                   : 0
+- Nulos en 'short_name'                  : 0
+- Nulos en 'overall'                     : 0
+- Nulos en 'potential'                   : 0
+- Nulos en 'bmi'                         : 0
+- Rango de normalizacion Min-Max         : [0.0 - 1.0]
+- Integridad estructural verificada      : SI (100% libre de nulos en variables clave)
+
+================================================================================
+ESTADO FINAL DE LA AUDITORIA: EXITOSO - DATOS LISTOS PARA MODELADO Y ANALITICA
+================================================================================
