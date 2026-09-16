@@ -25,7 +25,7 @@ Esta actividad implementa la segunda fase fundamental del ciclo de vida de Big D
      - Métricas técnicas y físicas (`pace`, `shooting`, `passing`, `dribbling`, `defending`, `physic`): Imputación estadística mediante la **mediana** de cada atributo.
    - **Corrección de Tipos de Datos:** Conversión de fechas (`dob`) a `datetime` (YYYY-MM-DD), campos métricos y edades a enteros (`int`), y limpieza de cadenas de texto (`strip`).
 4. **Ingeniería de Características y Transformaciones:**
-   - **Índice de Masa Corporal (`bmi`):** Cálculo biométrico $\text{peso\_kg} / (\text{altura\_m})^2$.
+   - **Índice de Masa Corporal (`bmi`):** Cálculo biométrico `peso_kg/(altura_m)^2`.
    - **Potencial de Crecimiento (`potential_growth`):** Margen de mejora $\text{potential} - \text{overall}$.
    - **Normalización Min-Max (`overall_normalized`):** Escalado del puntaje general al rango $[0.0, 1.0]$.
    - **Segmentación por Edad (`age_category`):** Categorización analítica en *Promesa*, *Plenitud*, *Veterano* y *Master*.
